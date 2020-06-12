@@ -1,0 +1,438 @@
+openapi: 3.0.0
+info:
+  version: '1.0.0'
+  title: 'API Documentation'
+  description: 'This is a detailed documentation on how to interact with xxx  API'
+  termsOfService: "https://foo.com/"
+  contact:
+    name: "Foo Support Staff (Chinedu)"
+    url: "https://foo.com"
+    email: "okoriechinedusunday@gmail.com"
+  license:
+    name: "Foo INC"
+    url: "https://foo.com"
+  
+servers:
+  - url: "https://foo.com"
+    description: "Demo server"
+
+paths:
+
+  /api/documents:
+    get:
+    
+      security:
+        - formeloAuth: []
+            
+      description: "Get all documents in a given collection"
+      
+      parameters:
+        - name: collection_id
+          in: query
+          description: "The collection id where data will be fetched"
+          required: true
+          schema:
+            type: string
+            example: 4jv9qol9
+        - name: pagsize
+          in: query
+          description: "The number of documents to be returned per page"
+          schema:
+            type: number
+            example: 25
+        - name: page
+          in: query
+          description: "The page to be returned"
+          schema:
+            type: number
+            example: 1
+        - name: orderby
+          in: query
+          description: "Specifies the order in which returned document will be sorted either ascending or descending"
+          schema:
+            type: string
+            example: -created_date
+        
+        - name: created_date
+          in: query
+          description: "Return documents created within a given date range"
+          schema:
+            type: string
+            example: "2020-06-09"
+
+      responses:
+        200:
+          description: "Request was successful and response recieved"
+        401:
+          description: "Authorization token not sent along with request or token not valid"
+        500:
+          description: "Server entcounter an error while processing the reauest"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Documents'
+
+    post:
+    
+      security:
+        - formeloAuth: []
+    
+      description: "Create a new document in a given collection"
+      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostBody"
+            example: {
+              collection: {
+              id: "4jv9qol9"
+              
+            },
+            
+            data: {
+              firstname: "Chinedu",
+              lastname: "Okorie"
+              
+            }
+          }
+      
+      responses:
+        201:
+          description: "Document created successfully"
+        400:
+          description: "Request contains invalid data in the request body"
+        401:
+          description: "Authorization token not sent along with request or token not valid"
+        
+        500:
+          description: "Server entcounter an error while processing the reauest"
+      
+      
+            
+
+  /api/documents/{id}:
+    get:
+      security:
+        - formeloAuth: []
+    
+      description: "Get a single document from a given collection"
+      
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: "The ID of the document to get(should have a .json extension)"
+          schema:
+            type: string
+            example: 'ly93vp6r.json'
+
+      responses:
+        200:
+          description: "Request was successful and response recieved"
+        400:
+          description: "Request contains invalid data in the request body"
+        401:
+          description: "Authorization token not sent along with request or token not valid"
+        404:
+          description: "No document found with the specified ID"
+        500:
+          description: "Server entcounter an error while processing the reauest"
+
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DocumentSchema'
+
+    put:
+      security:
+        - formeloAuth: []
+    
+      description: "Updates a document in a given collection"
+      
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: "The ID of the document to be updated"
+          schema:
+            type: string
+            example: 'ly93vp6r.json'
+      
+      responses:
+        200:
+          description: "Request was successful and response recieved"
+        400:
+          description: "Request contains invalid data in the request body"
+        401:
+          description: "Authorization token not sent along with request or token not valid"
+        403:
+          description: "User not authorized to access the requested resource"
+        404:
+          description: "No document found with the specified ID"
+        500:
+          description: "Server entcounter an error while processing the reauest"
+      
+      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+             $ref: "#/components/schemas/PutBody"
+
+    delete:
+      security:
+        - formeloAuth: []
+      
+      description: "Deletes the document with the specified ID from a given colection"
+      
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: "ID of the document to be deleted"
+          schema:
+            type: string
+            example: 'q1r0ywly.json'
+      
+      responses:
+        400:
+          description: "User sent inavlid data"
+        401:
+          description: "Authorization token not sent along with request or token not valid"
+        403:
+          description: "User not authorized to access the requested resource"
+        404:
+          description: "No document found with the specified ID"
+        500:
+          description: "Server entcounter an error while processing the reauest"
+          
+          
+  /iam/users:
+  
+    get:
+    
+      security:
+        - formeloAuth: []
+    
+      description: "Get all users in realm"
+    
+      responses:
+        200:
+          description: "Request was successful and response recieved"
+        401:
+          description: "Authorization token not sent along with request or token not valid"
+        500:
+          description: "Server entcounter an error while processing the reauest"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Documents'
+    post:
+    
+      security:
+        - formeloAuth: []
+    
+      description: "Create new user in the in a realm"
+      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+             $ref: "#/components/schemas/UserSchema"
+      
+      responses:
+        201:
+          description: "Document created successfully"
+        400:
+          description: "Request contains invalid data in the request body"
+        401:
+          description: "Authorization token not sent along with request or token not valid"
+        
+        500:
+          description: "Server entcounter an error while processing the reauest"
+      
+                  
+  /api/v1/user-info:
+    get:
+    
+      security:
+        - formeloAuth: []
+    
+      description: "Get user profile"
+      
+      parameters:
+        - name: include
+          in: query
+          description: "Authorization type"
+          schema:
+            type: string
+            example: messaging
+      
+      responses:
+        200:
+          description: "Request was successful and response recieved"
+        401:
+          description: "Authorization token not sent along with request or token not valid"
+        500:
+          description: "Server entcounter an error while processing the reauest"
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Documents'
+      
+
+components:
+  
+  schemas:
+  
+    TokenSchema:
+      description: "Request body to be sent along post request"
+      properties:
+        data:
+          type: object
+          example: {
+            access_token: "xxxx"
+         
+          }
+          
+    PostBody:
+      description: "Request body to be sent along post request"
+      properties:
+        data:
+          type: object
+          example: {
+              firstname: "Chinedu",
+              lastname: "Okorie sunday"
+          }
+        collection:
+          type: object
+          example: {
+              id: "4jv9qol9"
+          }
+    PutBody:
+      description: "Request body to be sent along put request"
+      properties:
+        data:
+          type: object
+          example: {
+              firstname: "Chinedu",
+              lastname: "Okorie sunday"
+          }
+        collection:
+          type: object
+          example: {
+              id: "4jv9qol9"
+          }
+        id:
+          type: string
+          example: "jpvmq8ej"
+          
+    UserSchema:
+      description: "Request body to create new user in a realm"
+      properties:
+        data:
+          type: object
+          example: {
+            type: 'default',
+            email: "user@mail.com",
+            username: "user@mail.com",
+            first_name: "chinedu",
+            password_new: "xxxx",
+            password_new_confirm: "xxxx",
+            role_code: 'CONTRIBUTOR',
+          }
+    
+    Documents:
+      description: "Array of document in a given colection"
+      type: array
+      items:
+        allOf:
+          [
+            $ref: '#/components/schemas/DocumentSchema',
+          ]
+
+    DocumentSchema:
+      description: "A single document in a collection"
+      properties:
+        data:
+          type: object
+          example: { 'firstname': 'Gbeminiyi', 'lastname': 'Gbodimowo' }
+
+        modifier:
+          type: object
+          example:
+            {
+              'name': 'Victoria',
+              'id': '3r918xl8',
+              'uuid': '58ed9b2b-7ce3-42bd-8f4d-44bce5774122',
+              'username': 'victoria.kazeem@pmglobaltechnology.com',
+            }
+
+        collection:
+          type: object
+          example:
+            {
+              'name': 'Test Formelo Collection',
+              'id': '4jv9qol9',
+              'uuid': '0640238d-e2d0-450a-a1b4-4e22d73647f0',
+              'slug': 'test-formelo-collection',
+            }
+
+        modified_date:
+          type: string
+          example: '2020-06-09T11:25:04Z'
+
+        uuid:
+          type: string
+          example: '01f6bd2d-58d8-483e-8679-e109052696ee'
+
+        name:
+          type: string
+          example: ''
+
+        realm:
+          type: object
+          example: { 'id': 'q1r08ejy' }
+
+        id:
+          type: string
+          example: 'jom32mxr'
+
+        created_date:
+          type: string
+          example: '2020-06-09T11:25:04Z'
+
+        user:
+          type: object
+          example:
+            {
+              'name': 'Victoria',
+              'id': '3r918xl8',
+              'uuid': '58ed9b2b-7ce3-42bd-8f4d-44bce5774122',
+              'username': 'victoria.kazeem@pmglobaltechnology.com',
+            }
+
+        entity_tag:
+          type: string
+          example: 'documents'
+
+  securitySchemes:
+    formeloAuth:
+      type: http
+      scheme: basic
+      
+
+security:
+  - formeloAuth: []
