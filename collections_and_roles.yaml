@@ -1,0 +1,379 @@
+openapi: 3.0.0
+info:
+  version: '1.0.0'
+  title: 'API Documentation'
+  description: 'This is a detailed documentation on how to interact with formelo  API'
+  termsOfService: 'https://formelo.com/'
+  contact:
+    name: 'Formelo Support Staff'
+    url: 'https://devlab.formelo.com'
+    email: 'okoriechinedusunday@gmail.com'
+  license:
+    name: 'Formelo INC'
+    url: 'https://devlab.formelo.com'
+
+servers:
+  - url: 'https://devlab.formelo.com/api'
+    description: 'Dev server'
+
+paths:
+  /collections:
+    get:
+      security:
+        - formeloAuth: []
+
+      description: 'Get all  collections'
+      summary: 'Get all  collections'
+      responses:
+        200:
+          description: 'Request was successful and response recieved'
+        401:
+          description: 'Authorization token not sent along with request or token not valid'
+        500:
+          description: 'Server entcounter an error while processing the reauest'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf: [$ref: '#/components/schemas/Collection']
+
+    post:
+      security:
+        - formeloAuth: []
+
+      description: 'Create a new  collection'
+      summary: 'Create new collection'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Collection'
+
+      responses:
+        201:
+          description: 'Collection created successfully'
+        400:
+          description: 'Request contains invalid data in the request body'
+        401:
+          description: 'Authorization token not sent along with request or token not valid'
+
+        500:
+          description: 'Server entcounter an error while processing the reauest'
+
+  /collections/{id}:
+    get:
+      security:
+        - formeloAuth: []
+
+      description: 'Get a single  collection'
+      summary: 'Ge a single collection'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: 'The ID of the collection to get(should have a .json extension)'
+          schema:
+            type: string
+            example: 'ly93vp6r.json'
+
+      responses:
+        200:
+          description: 'Request was successful and response recieved'
+        400:
+          description: 'Request contains invalid data in the request body'
+        401:
+          description: 'Authorization token not sent along with request or token not valid'
+        404:
+          description: 'No document found with the specified ID'
+        500:
+          description: 'Server entcounter an error while processing the reauest'
+
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Collection'
+
+    put:
+      security:
+        - formeloAuth: []
+
+      description: 'Updates  a given collection'
+      summary: 'Update a given collection'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: 'The ID of the collection to be updated'
+          schema:
+            type: string
+            example: 'ly93vp6r.json'
+
+      responses:
+        200:
+          description: 'Request was successful and response recieved'
+        400:
+          description: 'Request contains invalid data in the request body'
+        401:
+          description: 'Authorization token not sent along with request or token not valid'
+        403:
+          description: 'User not authorized to access the requested resource'
+        404:
+          description: 'No collection found with the specified ID'
+        500:
+          description: 'Server entcounter an error while processing the reauest'
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Collection'
+
+    delete:
+      security:
+        - formeloAuth: []
+
+      description: 'Deletes a collection with the specified ID from a given colection'
+      summary: 'Delete a collection'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: 'ID of the collection to be deleted'
+          schema:
+            type: string
+            example: 'q1r0ywly.json'
+
+      responses:
+        400:
+          description: 'User sent inavlid data'
+        401:
+          description: 'Authorization token not sent along with request or token not valid'
+        403:
+          description: 'User not authorized to access the requested resource'
+        404:
+          description: 'No document found with the specified ID'
+        500:
+          description: 'Server entcounter an error while processing the reauest'
+
+  /roles:
+    get:
+      security:
+        - formeloAuth: []
+
+      description: 'Get all Roles'
+      summary: 'Get all roles'
+      responses:
+        200:
+          description: 'Request was successful and response recieved'
+        401:
+          description: 'Authorization token not sent along with request or token not valid'
+        500:
+          description: 'Server entcounter an error while processing the reauest'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf: [$ref: '#/components/schemas/Role']
+
+    post:
+      security:
+        - formeloAuth: []
+
+      description: 'Create new Role'
+      summary: 'Create new role'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+
+      responses:
+        201:
+          description: 'Role created successfully'
+        400:
+          description: 'Request contains invalid data in the request body'
+        401:
+          description: 'Authorization token not sent along with request or token not valid'
+
+        500:
+          description: 'Server entcounter an error while processing the reauest'
+
+  /roles/{id}:
+    get:
+      security:
+        - formeloAuth: []
+
+      description: 'Get a single Role'
+      summary: 'Get a single role'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: 'The ID of the role to get(should have a .json extension)'
+          schema:
+            type: string
+            example: 'ly93vp6r.json'
+
+      responses:
+        200:
+          description: 'Request was successful and response recieved'
+        400:
+          description: 'Request contains invalid data in the request body'
+        401:
+          description: 'Authorization token not sent along with request or token not valid'
+        404:
+          description: 'No document found with the specified ID'
+        500:
+          description: 'Server entcounter an error while processing the reauest'
+
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+
+    put:
+      security:
+        - formeloAuth: []
+
+      description: 'Updates a Role'
+      summary: 'update a role'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: 'The ID of the role to be updated'
+          schema:
+            type: string
+            example: 'ly93vp6r.json'
+
+      responses:
+        200:
+          description: 'Request was successful and response recieved'
+        400:
+          description: 'Request contains invalid data in the request body'
+        401:
+          description: 'Authorization token not sent along with request or token not valid'
+        403:
+          description: 'User not authorized to access the requested resource'
+        404:
+          description: 'No role found with the specified ID'
+        500:
+          description: 'Server entcounter an error while processing the reauest'
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+
+    delete:
+      security:
+        - formeloAuth: []
+
+      description: 'Deletes the document with the specified ID from a given colection'
+      summary: 'Delete a role'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: 'ID of the document to be deleted'
+          schema:
+            type: string
+            example: 'q1r0ywly.json'
+
+      responses:
+        400:
+          description: 'User sent inavlid data'
+        401:
+          description: 'Authorization token not sent along with request or token not valid'
+        403:
+          description: 'User not authorized to access the requested resource'
+        404:
+          description: 'No document found with the specified ID'
+        500:
+          description: 'Server entcounter an error while processing the reauest'
+
+components:
+  schemas:
+    Entity:
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+          example: 'jom32mxr'
+        created_date:
+          type: string
+          example: '2020-06-09T11:25:04.000Z'
+        modified_date:
+          type: string
+          example: '2020-06-09T11:25:04.000Z'
+        entity_tag:
+          type: string
+          example: documents
+        uuid:
+          type: string
+          example: '58ed9b2b-7ce3-42bd-8f4d-44bce5774122'
+        realm:
+          $ref: '#/components/schemas/Realm'
+        modifier:
+          $ref: '#/components/schemas/Modifier'
+    Realm:
+      properties:
+        id:
+          type: string
+          example: 'q1r08ejy'
+    Modifier:
+      properties:
+        name:
+          type: string
+          example: 'Chinedu'
+        id:
+          type: string
+          example: '3r918xl8'
+        uuid:
+          type: string
+          example: '58ed9b2b-7ce3-42bd-8f4d-44bce5774122'
+        username:
+          type: string
+          example: 'okorie.chinedu@pmglobaltechnology.com'
+
+    Collection:
+      description: 'Schema for a collection'
+      properties:
+        size:
+          type: number
+          example: 0
+          description: 'size of collection'
+        slug:
+          type: string
+          example: 'fly_local'
+          description: 'Unique name for a collection'
+      allOf:
+        - $ref: '#/components/schemas/Entity'
+        - type: object
+
+    Role:
+      description: 'Role for users'
+      properties:
+        code:
+          type: string
+          example: 'ADMINISTRATOR'
+          description: 'Role code of a user or user-group'
+      allOf:
+        - $ref: '#/components/schemas/Entity'
+        - type: object
+
+  securitySchemes:
+    formeloAuth:
+      type: http
+      scheme: basic
+
+security:
+  - formeloAuth: []
